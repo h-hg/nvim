@@ -1,0 +1,1 @@
+vim.bo[0].expandtab = false
