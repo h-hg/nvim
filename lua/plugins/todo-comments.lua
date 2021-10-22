@@ -9,7 +9,7 @@ local function keymap()
       ['l'] = {'<Cmd>TodoLocList<CR>', 'Todo Location List'},
       ['q'] = {'<Cmd>TodoQuickFix<CR>', 'Todo Quickfix'},
     },
-    ['<Leader>fc'] = {'<Cmd>TodoTelescope<CR>', 'Search Comment Todo'}
+    ['<Leader>ft'] = {'<Cmd>TodoTelescope<CR>', 'Search Comment Todo'}
   })
 end
 

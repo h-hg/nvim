@@ -102,7 +102,7 @@ end
 local function keymap()
   local wk = require('which-key')
   wk.register({
-    ['<Leader>ft'] = { '<Cmd>Format<CR>', 'Format Code' }
+    ['<Leader>t'] = { '<Cmd>Format<CR>', 'Format Code' }
   })
 end
 

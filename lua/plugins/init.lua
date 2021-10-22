@@ -254,18 +254,23 @@ packer.startup({
       event = 'InsertEnter',
       requires = {
         {
-          'L3MON4D3/LuaSnip',
-          event = 'InsertEnter', -- before nvim-cmp
+          'L3MON4D3/LuaSnip', -- should be loaded before nvim-cmp
           requires = 'rafamadriz/friendly-snippets',
-        },
-        {
-          'saadparwaiz1/cmp_luasnip',
-          after = 'nvim-cmp',
           config = function ()
-            require('luasnip/loaders/from_vscode').lazy_load({
-              path = {vim.fn.stdpath('data')..'/site/pack/packer/start/friendly-snippets'}
+            -- require('luasnip').config.setup({})
+            -- if lazy_load is used, the LuaSnip should be loaded before ButWinEnter and FileType
+            require('luasnip.loaders.from_vscode').lazy_load({
+              paths = {
+                vim.fn.stdpath('data')..'/site/pack/packer/start/friendly-snippets',
+                './snippests', -- Your custom snippests
+              }
             })
           end,
+        },
+        {
+          -- nvim-cmp source for LuaSnip
+          'saadparwaiz1/cmp_luasnip',
+          after = 'nvim-cmp',
         },
         {
           -- nvim-cmp source for neovim builtin LSP client
@@ -347,6 +352,19 @@ packer.startup({
       'h-hg/fcitx.nvim',
       event = 'BufWinEnter',
     }
+    -- a clipboard manager for neovim
+    use {
+      "AckslD/nvim-neoclip.lua",
+      event = 'BufWinEnter',
+      requires = {'tami5/sqlite.lua', module = 'sqlite'},
+      config = function()
+        require('neoclip').setup()
+        require('which-key').register({
+          ['<Leader>fc'] = 'Search Clipboard History',
+        })
+      end,
+    }
+    
     -- smooth scroll
     use {
       'karb94/neoscroll.nvim',
