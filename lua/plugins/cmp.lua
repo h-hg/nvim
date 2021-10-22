@@ -13,15 +13,19 @@ local has_words_before = function()
 end
 
 local cmp = require 'cmp'
+local luasnip = require 'luasnip'
 cmp.setup {
   snippet = {
     expand = function(args)
-        vim.fn['vsnip#anonymous'](args.body)
+      -- vim.fn['vsnip#anonymous'](args.body)
+      require'luasnip'.lsp_expand(args.body)
     end,
   },
   mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -31,23 +35,25 @@ cmp.setup {
       select = true,
     },
     -- the code of <Tab> and <S-tab> is from https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#vim-vsnip
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n', true)
-      elseif has_words_before() and vim.fn['vsnip#available']() == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-expand-or-jump)', true, true, true), '', true)
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
       else
         fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
       end
-    end, { 'i', 's' }),
+    end, { "i", "s" }),
 
-    ['<S-Tab>'] = cmp.mapping(function()
-      if vim.fn.pumvisible() == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n', true)
-      elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-jump-prev)', true, true, true), '', true)
+    ["<S-Tab>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       end
-    end, { 'i', 's' }),
+    end, { "i", "s" }),
   },
   formatting = {
     format = function(entry, vim_item)
@@ -57,7 +63,7 @@ cmp.setup {
       vim_item.menu = ({
         buffer = '[Buffer]',
         nvim_lsp = '[LSP]',
-        vsnip = '[VSnip]',
+        luasnip = '[LuaSnip]', -- bug, show LSP, not LuaSnip
         nvim_lua = '[Lua]',
         latex_symbols = '[Latex]',
         spell = '[Spell]',
@@ -71,30 +77,9 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'buffer' },
-    { name = 'vsnip' },
+    { name = 'luasnip' },
     { name = 'spell' },
     { name = 'nvim_lua'},
     { name = 'latex_symbols' },
   },
 }
-
--- The following code is copied from
--- https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
--- https://github.com/neovim/nvim-lspconfig/wiki/Snippets
-
-
-
--- my custom mapping: copied from https://github.com/hamsterBiscuit/nvim
-
--- vim.api.nvim_set_keymap('n', '<C-f>', '<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('n', '<C-b>', '<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>', {noremap = true, silent = true})
-
--- vsnip Expand or jump
--- vim.api.nvim_set_keymap('i', '<C-n>', 'vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'', {expr = true})
--- vim.api.nvim_set_keymap('s', '<C-n>', 'vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'', {expr = true})
-
--- configuraion for vim-vsnip
-vim.g.vsnip_snippet_dir = os.getenv('HOME') .. '/.config/nvim/snippets'
-vim.g.vsnip_filetypes = {}
-vim.g.vsnip_filetypes.javascriptreact = {'javascript'}
-vim.g.vsnip_filetypes.typescriptreact = {'typescript'}

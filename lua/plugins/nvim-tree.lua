@@ -47,6 +47,7 @@ function M.config()
   
   -- ' a list of groups can be found at `:help nvim_tree_highlight`
   -- highlight NvimTreeFolderIcon guibg=blue
+  require('nvim-tree').setup()
 end
 
 local function keymap()

@@ -108,6 +108,13 @@ end
 
 function M.setup()
   keymap()
+  -- auto formatting after writing file
+  -- vim.api.nvim_exec([[
+  --   autogroup FormatAutogroup
+  --     autocmd!
+  --     autocmd! BufWritePost *.js,*,css, FormatWrite
+  --   autogroup END
+  -- ]], true)
 end
 
 return M

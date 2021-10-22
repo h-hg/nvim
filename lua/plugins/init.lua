@@ -57,7 +57,7 @@ packer.startup({
     -- status line
     use {
       -- the origin hoob3rt/lualine.nvim may not be under maintenance
-      'shadmansaleh/lualine.nvim',
+      'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true},
       event = 'BufWinEnter',
       config = function()
@@ -151,6 +151,7 @@ packer.startup({
     -- syntax highlight
     use {
       'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate',
       event = 'BufRead',
       config = function()
         require('plugins.treesitter')
@@ -253,19 +254,23 @@ packer.startup({
       event = 'InsertEnter',
       requires = {
         {
-          -- alternative: 'L3MON4D3/LuaSnip',
-          'hrsh7th/vim-vsnip',
-          event = 'InsertCharPre',
+          'L3MON4D3/LuaSnip',
+          event = 'InsertEnter', -- before nvim-cmp
+          requires = 'rafamadriz/friendly-snippets',
         },
         {
-          -- TODO: maybe not use this
-          'hrsh7th/cmp-vsnip',
+          'saadparwaiz1/cmp_luasnip',
           after = 'nvim-cmp',
+          config = function ()
+            require('luasnip/loaders/from_vscode').lazy_load({
+              path = {vim.fn.stdpath('data')..'/site/pack/packer/start/friendly-snippets'}
+            })
+          end,
         },
         {
           -- nvim-cmp source for neovim builtin LSP client
           'hrsh7th/cmp-nvim-lsp',
-          after = 'nvim-cmp',
+          -- event = 'VimEnter', -- don't lazy load, for it will be used in lspconfig
         },
         {
           -- nvim-cmp source for buffer words.
