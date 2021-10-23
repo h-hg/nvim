@@ -17,7 +17,6 @@ local luasnip = require 'luasnip'
 cmp.setup {
   snippet = {
     expand = function(args)
-      -- vim.fn['vsnip#anonymous'](args.body)
       require'luasnip'.lsp_expand(args.body)
     end,
   },
@@ -63,7 +62,7 @@ cmp.setup {
       vim_item.menu = ({
         buffer = '[Buf]',
         nvim_lsp = '[LSP]',
-        luasnip = '[Snip]', -- bug, show LSP, not LuaSnip
+        luasnip = '[Snip]',
         nvim_lua = '[NvimLua]',
         latex_symbols = '[Latex]',
         spell = '[Spell]',

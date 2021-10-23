@@ -40,25 +40,13 @@ local function keymap()
     mode = 'v'
   })
   wk.register({
-    -- emacs shortcut in Insert/Command mode
+    -- emacs shortcut in Insert mode
     ['<C-a>'] = {'<Home>', 'Home'},
     ['<C-e>'] = {'<End>', 'End'},
     ['<C-d>'] = {'<Del>', 'Del'},
     ['<C-_>'] = {'<C-k>', ''},
-    -- move insert mode
-    ['<C-h>'] = { '<Left>', 'Left'},
-    ['<C-j>'] = { '<Down>', 'Down'},
-    ['<C-k>'] = { '<Up>', 'Up'},
-    ['<C-l>'] = { '<Right>', 'Right'},
   }, {
     mode = 'i'
-  })
-  wk.register({
-    -- move normal mode
-    ['<C-h>'] = {'<Left>', 'Left'},
-    ['<C-j>'] = {'<Down>', 'Down'},
-    ['<C-k>'] = {'<Up>', 'Up'},
-    ['<C-l>'] = {'<Right>', 'Right'},
   })
   wk.register({
     -- move command mode

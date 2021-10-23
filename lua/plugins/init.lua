@@ -257,13 +257,7 @@ packer.startup({
           'L3MON4D3/LuaSnip', -- should be loaded before nvim-cmp
           requires = 'rafamadriz/friendly-snippets',
           config = function ()
-            -- if lazy_load is used, the LuaSnip should be loaded before ButWinEnter and FileType
-            require('luasnip.loaders.from_vscode').lazy_load({
-              paths = {
-                vim.fn.stdpath('data')..'/site/pack/packer/start/friendly-snippets',
-                './snippests', -- Your custom snippests
-              }
-            })
+            require('plugins.luasnip')
           end,
         },
         {
@@ -357,7 +351,7 @@ packer.startup({
     }
     -- a clipboard manager for neovim
     use {
-      "AckslD/nvim-neoclip.lua",
+      'AckslD/nvim-neoclip.lua',
       event = 'BufWinEnter',
       requires = {'tami5/sqlite.lua', module = 'sqlite'},
       config = function()
