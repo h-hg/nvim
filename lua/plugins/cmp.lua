@@ -61,19 +61,20 @@ cmp.setup {
       vim_item.kind = lspkind.presets.default[vim_item.kind]
       -- set a name for each source
       vim_item.menu = ({
-        buffer = '[Buffer]',
+        buffer = '[Buf]',
         nvim_lsp = '[LSP]',
-        luasnip = '[LuaSnip]', -- bug, show LSP, not LuaSnip
-        nvim_lua = '[Lua]',
+        luasnip = '[Snip]', -- bug, show LSP, not LuaSnip
+        nvim_lua = '[NvimLua]',
         latex_symbols = '[Latex]',
         spell = '[Spell]',
         path = '[Path]',
+        emoji = '[Emoji]',
       })[entry.source.name]
       return vim_item
     end
   },
   sources = {
-    -- no plan for omni, https://github.com/hrsh7th/nvim-cmp/issues/122
+    -- no plan for omni, https://github.com/hrsh7th/nvim-cmp/issues/122, alternative hrsh7th/cmp-omni
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'buffer' },
@@ -81,5 +82,6 @@ cmp.setup {
     { name = 'spell' },
     { name = 'nvim_lua'},
     { name = 'latex_symbols' },
+    { name = 'emoji' },
   },
 }

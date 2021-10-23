@@ -257,7 +257,6 @@ packer.startup({
           'L3MON4D3/LuaSnip', -- should be loaded before nvim-cmp
           requires = 'rafamadriz/friendly-snippets',
           config = function ()
-            -- require('luasnip').config.setup({})
             -- if lazy_load is used, the LuaSnip should be loaded before ButWinEnter and FileType
             require('luasnip.loaders.from_vscode').lazy_load({
               paths = {
@@ -288,7 +287,7 @@ packer.startup({
         },
         {
           -- nvim-cmp source for neovim Lua API.
-          -- TODO: lazy load on filetype AND event, and using require 'cmp'.setup.buffer
+          -- source.is_available = true when vim.bo.filetype == 'lua'
           'hrsh7th/cmp-nvim-lua',
           after = 'nvim-cmp',
         },
@@ -299,8 +298,12 @@ packer.startup({
         },
         {
           -- nvim-cmp source for latex symbols
-          -- TODO: lazy load on filetype AND event, and using require 'cmp'.setup.buffer
           'kdheepak/cmp-latex-symbols',
+          after = 'nvim-cmp',
+        },
+        {
+          -- nvim-cmp source for emoji
+          'hrsh7th/cmp-emoji',
           after = 'nvim-cmp',
         },
         {
