@@ -335,7 +335,7 @@ packer.startup({
     -- underline the same words
     use {
       'xiyaowong/nvim-cursorword',
-      event = 'BufRead',
+      event = 'BufWinEnter',
     }
     -- switch to english input automatically when changing to Normal mode
     use {
