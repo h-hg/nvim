@@ -80,7 +80,8 @@ local function keymap()
   ]]
 end
 
-function M.setup()
+function M.config()
+  require('which-key').setup({})
   keymap()
 end
 

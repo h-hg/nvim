@@ -9,9 +9,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
   execute 'packadd packer.nvim'
 end
 
--- For which-key is used in the configuration of other plugins
-vim.cmd [[packadd which-key.nvim]]
-
 local packer = require('packer')
 
 packer.startup({
@@ -46,12 +43,8 @@ packer.startup({
     -- show keymaping
     use {
       'folke/which-key.nvim',
-      -- event = 'BufWinEnter',
       config = function()
-        require('which-key').setup({})
-      end,
-      setup = function()
-        require('plugins.which-key').setup()
+        require('plugins.which-key').config()
       end
     }
     -- status line
