@@ -73,7 +73,8 @@ cmp.setup {
         spell = '[Spell]',
         path = '[Path]',
         emoji = '[Emoji]',
-        cmdline = '[Cmdline]'
+        cmdline = '[NvimCmd]',
+        cmdline_history = '[History]',
       })[entry.source.name]
       return vim_item
     end
@@ -107,6 +108,8 @@ cmp.setup.cmdline(':', {
     { name = 'path' },
   }, {
     { name = 'cmdline' },
+  }, {
+    { name = 'cmdline_history' },
   }),
 })
 

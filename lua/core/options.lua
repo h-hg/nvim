@@ -73,7 +73,7 @@ local function load_options()
   -- device
   opt.mouse = 'a'
   opt.mousefocus = true
-  -- clipboard = 'unnamedplus' -- system clipboard
+  opt.clipboard = { 'unnamedplus' } -- use system's clipboard
   opt.timeout = true
   opt.ttimeout = true
   opt.timeoutlen = 500

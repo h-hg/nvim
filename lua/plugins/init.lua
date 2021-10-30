@@ -298,13 +298,20 @@ packer.startup({
           after = 'nvim-cmp',
         },
         {
+          -- nvim-cmp source for neovim command line
           'hrsh7th/cmp-cmdline',
           after = 'nvim-cmp',
         },
         {
           'hrsh7th/cmp-nvim-lsp-document-symbol',
-          after = 'nvim-cmp'
+          after = 'nvim-cmp',
         },
+        {
+          -- nvim-cmp source for command history
+          'dmitmel/cmp-cmdline-history',
+          after = 'nvim-cmp',
+        },
+        -- TODO uga-rosa/cmp-dictionary
         {
           -- auto completement for pairs
           'windwp/nvim-autopairs',

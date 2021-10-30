@@ -11,28 +11,6 @@ local function keymap()
     }
   })
   wk.register({
-    -- system clipboard in normal mode
-    ['<Leader>y'] = {'"+y','Clipboard Copy'},
-    ['<Leader>d'] = {'"+d','Clipboard Cut'},
-    ['<Leader>p'] = {'"+p','Clipboard Paste(p)'},
-    ['<Leader>P'] = {'"+P','Clipboard Paste(P)'},
-  }, {
-    mode = 'n',
-    silent = false,
-    noremap = false,
-  })
-  wk.register({
-    -- system clipboard in visual mode
-    ['<Leader>y'] = {'"+y','Clipboard Copy'},
-    ['<Leader>d'] = {'"+d','Clipboard Cut'},
-    ['<Leader>p'] = {'"+p','Clipboard Paste(p)'},
-    ['<Leader>P'] = {'"+P','Clipboard Paste(P)'},
-  }, {
-    mode = 'v',
-    silent = false,
-    noremap = false,
-  })
-  wk.register({
     -- indentation
     ['<'] = {'<gv', 'Indent'},
     ['>'] = {'>gv', 'Anti-indent'},
