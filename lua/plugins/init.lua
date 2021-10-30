@@ -270,7 +270,11 @@ packer.startup({
         },
         {
           'f3fora/cmp-spell',
-          after = 'nvim-cmp'
+          after = 'nvim-cmp',
+          config = function()
+            vim.opt.spell = true
+            vim.opt.spelllang = { 'en_us' }
+          end,
         },
         {
           -- nvim-cmp source for neovim Lua API.
@@ -292,6 +296,14 @@ packer.startup({
           -- nvim-cmp source for emoji
           'hrsh7th/cmp-emoji',
           after = 'nvim-cmp',
+        },
+        {
+          'hrsh7th/cmp-cmdline',
+          after = 'nvim-cmp',
+        },
+        {
+          'hrsh7th/cmp-nvim-lsp-document-symbol',
+          after = 'nvim-cmp'
         },
         {
           -- auto completement for pairs
@@ -335,7 +347,7 @@ packer.startup({
     -- underline the same words
     use {
       'xiyaowong/nvim-cursorword',
-      event = 'BufWinEnter',
+      event = 'VimEnter',
     }
     -- switch to english input automatically when changing to Normal mode
     use {

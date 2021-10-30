@@ -21,20 +21,23 @@ cmp.setup {
     end,
   },
   mapping = {
+    -- TODO cmdline
     ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
     ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
     ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
     ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    -- the code of <Tab> and <S-tab> is from https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#vim-vsnip
-    ["<Tab>"] = cmp.mapping(function(fallback)
+
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    -- the code of <Tab> and <S-tab> is from https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
@@ -44,15 +47,17 @@ cmp.setup {
       else
         fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
       end
-    end, { "i", "s" }),
+    end, { 'i', 's', 'c' }),
 
-    ["<S-Tab>"] = cmp.mapping(function()
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)
+      else
+        fallback()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's', 'c' }),
   },
   formatting = {
     format = function(entry, vim_item)
@@ -68,6 +73,7 @@ cmp.setup {
         spell = '[Spell]',
         path = '[Path]',
         emoji = '[Emoji]',
+        cmdline = '[Cmdline]'
       })[entry.source.name]
       return vim_item
     end
@@ -84,3 +90,23 @@ cmp.setup {
     { name = 'emoji' },
   },
 }
+
+local search_sources = {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' },
+  }, {
+    { name = 'buffer' },
+  }),
+}
+-- Use buffer source for `/`.
+cmp.setup.cmdline('/', search_sources)
+cmp.setup.cmdline('?', search_sources)
+-- Use cmdline & path source for ':'.
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
+})
+
