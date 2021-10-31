@@ -3,7 +3,11 @@
 local lspkind = require('lspkind')
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = {
+  'menu',
+  'menuone',
+  'noselect',
+}
 
 -- nvim-cmp setup
 
@@ -21,12 +25,10 @@ cmp.setup {
     end,
   },
   mapping = {
-    -- TODO cmdline
-    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-
+    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),{'i','c'}),
+    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),{'i','c'}),
+    ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),{'i','c'}),
+    ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),{'i','c'}),
     ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -66,15 +68,16 @@ cmp.setup {
       -- set a name for each source
       vim_item.menu = ({
         buffer = '[Buf]',
-        nvim_lsp = '[LSP]',
-        luasnip = '[Snip]',
-        nvim_lua = '[NvimLua]',
-        latex_symbols = '[Latex]',
-        spell = '[Spell]',
-        path = '[Path]',
-        emoji = '[Emoji]',
         cmdline = '[NvimCmd]',
         cmdline_history = '[History]',
+        dictionary = '[Dict]',
+        emoji = '[Emoji]',
+        latex_symbols = '[Latex]',
+        luasnip = '[Snip]',
+        nvim_lsp = '[LSP]',
+        nvim_lua = '[NvimLua]',
+        path = '[Path]',
+        spell = '[Spell]',
       })[entry.source.name]
       return vim_item
     end
@@ -89,6 +92,10 @@ cmp.setup {
     { name = 'nvim_lua'},
     { name = 'latex_symbols' },
     { name = 'emoji' },
+    {
+      name = 'dictionary',
+      keyword_length = 2,
+    },
   },
 }
 

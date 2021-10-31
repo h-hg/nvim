@@ -311,7 +311,20 @@ packer.startup({
           'dmitmel/cmp-cmdline-history',
           after = 'nvim-cmp',
         },
-        -- TODO uga-rosa/cmp-dictionary
+        {
+          -- nvim-cmp source for dictionary
+          'uga-rosa/cmp-dictionary',
+          after = 'nvim-cmp',
+          config = function()
+            local MYCONFIG_ROOT = vim.env.MYVIMRC:gsub("/[^/]+$", "")
+            local dict_path = MYCONFIG_ROOT .. '/dict.txt'
+            local f = io.open(dict_path, 'r')
+            if f ~= nil then
+              io.close(f)
+              vim.opt.dictionary:append(dict_path)
+            end
+          end,
+        },
         {
           -- auto completement for pairs
           'windwp/nvim-autopairs',
