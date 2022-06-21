@@ -4,7 +4,7 @@ vim.api.nvim_command('set foldmethod=expr')
 vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
 
 treesitter.setup{
-  ensure_installed = 'maintained',
+  ensure_installed = 'all',
   highlight = {
     enable = true,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.

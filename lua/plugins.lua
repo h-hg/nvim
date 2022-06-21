@@ -44,7 +44,7 @@ packer.startup({
     use {
       'folke/which-key.nvim',
       config = function()
-        require('plugins.which-key').config()
+        require('nav.which-key').config()
       end
     }
     -- status line
@@ -54,16 +54,8 @@ packer.startup({
       requires = {'kyazdani42/nvim-web-devicons', opt = true},
       event = 'BufWinEnter',
       config = function()
-        require('plugins.lualine')
+        require('nav.lualine')
       end
-    }
-    -- start page
-    use {
-      'glepnir/dashboard-nvim',
-      event = 'BufWinEnter',
-      config = function()
-        require('plugins.dashboard')
-      end,
     }
     -- buffer managerment
     use {
@@ -71,10 +63,10 @@ packer.startup({
       requires = 'kyazdani42/nvim-web-devicons',
       event = 'BufWinEnter',
       setup = function ()
-        require('plugins.bufferline').setup()
+        require('nav.bufferline').setup()
       end,
       config = function()
-        require('plugins.bufferline').config()
+        require('nav.bufferline').config()
       end,
     }
     -- delete buffer without losing layout
@@ -85,7 +77,7 @@ packer.startup({
         'Bdelete!',
       },
       setup = function()
-        require('plugins.bufdelete').setup()
+        require('nav.bufdelete').setup()
       end,
     }
     -- explorer
@@ -97,10 +89,10 @@ packer.startup({
         'NvimTreeFindFile'
       },
       setup = function()
-        require('plugins.nvim-tree').setup()
+        require('nav.nvim-tree').setup()
       end,
       config = function()
-        require('plugins.nvim-tree').config()
+        require('nav.nvim-tree').config()
       end,
     }
     -- symbols outline
@@ -122,12 +114,14 @@ packer.startup({
       },
       cmd = 'Telescope',
       setup = function ()
-        require('plugins.telescope').setup()
+        require('nav.telescope').setup()
       end,
       config = function()
-        require('plugins.telescope').config()
+        require('nav.telescope').config()
       end,
     }
+    
+    -- code relative
     -- indent line
     use {
       'lukas-reineke/indent-blankline.nvim',
@@ -136,26 +130,25 @@ packer.startup({
         'BufNewFile'
       },
       config = function()
-        require('plugins.indent-blankline')
+        require('others.indent-blankline')
       end,
     }
-
-    -- code relative
     -- syntax highlight
     use {
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
-      event = 'BufRead',
+      event = 'VimEnter', -- before hrsh7th/nvim-cmp
       config = function()
-        require('plugins.treesitter')
+        require('others.treesitter')
       end,
     }
     -- hight color code
+    -- 可能需要找有维护的
     use {
       'norcalli/nvim-colorizer.lua',
       event = 'BufRead',
       config = function()
-        require('plugins.colorizer')
+        require('others.colorizer')
       end
     }
     -- code comment toggle
@@ -172,7 +165,7 @@ packer.startup({
       requires = 'nvim-lua/plenary.nvim',
       event = 'BufWinEnter',
       setup = function ()
-        require('plugins.todo-comments').setup()
+        require('others.todo-comments').setup()
       end,
       config = function()
         require('todo-comments').setup {}
@@ -187,10 +180,10 @@ packer.startup({
       'mhartington/formatter.nvim',
       cmd = 'Format',
       setup = function()
-        require('plugins.formatter').setup()
+        require('others.formatter').setup()
       end,
       config = function()
-        require('plugins.formatter').config()
+        require('others.formatter').config()
       end,
     }
     -- TODO
@@ -203,41 +196,93 @@ packer.startup({
     -- LSP configuration
     use {
       'neovim/nvim-lspconfig',
-      event = 'BufReadPre',
+      event = 'VimEnter',
       config = function()
-        require('plugins.lspconfig')
+        require('lsp.ui')
       end,
     }
-    -- LSP Trouble Hint in the left of line number
-    -- TODO bug
-    use 'folke/lsp-colors.nvim'
     -- LSP Trouble Pane
     use {
       'folke/trouble.nvim',
       requires = 'kyazdani42/nvim-web-devicons',
+      cmd = 'TroubleToggle',
       setup = function()
-        require('plugins.trouble').setup {}
+        require('lsp.trouble').setup()
       end,
-      config = function()
-        require('plugins.trouble').setup()
-      end
     }
     -- This tiny plugin adds vscode-like pictograms to neovim built-in lsp
     use {
       'onsails/lspkind-nvim',
-      event = 'BufWinEnter',
+      event = 'VimEnter',
       config = function()
         require('lspkind').init()
       end
+    }
+    -- show code action icon like vscode automatically
+    use {
+      'kosayoda/nvim-lightbulb',
+      requires = 'antoinemadec/FixCursorHold.nvim',
+      after = 'nvim-lspconfig',
+      config = function ()
+        require('nvim-lightbulb').setup {
+          virtual_text = {
+            enabled = false,
+          },
+          status_text = {
+            enabled = false,
+          },
+          autocmd = {
+            enabled = true
+          }
+        }
+      end,
     }
     -- lsp UI: A light-weight lsp plugin based on neovim built-in lsp with a highly performant UI.
     -- TODO bug
     use {
       'glepnir/lspsaga.nvim',
-      after = 'nvim-cmp',
+      disable = true,
       cmd = 'Lspsaga',
       config = function ()
         require('lspsaga').init_lsp_saga()
+      end
+    }
+    -- Show function signature when you type
+    -- TODO Can't jump into the float windows when pressing the same keys again
+    use {
+      'ray-x/lsp_signature.nvim',
+      after = 'nvim-lspconfig',
+      config = function()
+        require 'lsp_signature'.setup({
+          bind = true, -- This is mandatory, otherwise border config won't get registered.
+          handler_opts = {
+            border = 'rounded'
+          }
+        })
+      end,
+    }
+    -- LSP installer
+    use {
+      "williamboman/nvim-lsp-installer",
+      after = 'nvim-lspconfig',
+      config = function()
+        require("nvim-lsp-installer").setup({
+          ensure_installed = {
+            'bashls', -- bash
+            'cssls', -- css
+            'dockerls', -- docker
+            'html', -- html
+            'jsonls', -- json
+            'sumneko_lua', -- lua
+            'sqls', -- sql
+            'taplo', -- toml
+            'tsserver', -- typescript
+            'vimls', -- vim
+            'lemminx', -- xml
+            'yamlls', -- yaml
+          },
+        })
+        require('lsp.server')
       end
     }
 
@@ -250,7 +295,7 @@ packer.startup({
           'L3MON4D3/LuaSnip', -- should be loaded before nvim-cmp
           requires = 'rafamadriz/friendly-snippets',
           config = function ()
-            require('plugins.luasnip')
+            require('cmp.luasnip')
           end,
         },
         {
@@ -303,6 +348,7 @@ packer.startup({
           after = 'nvim-cmp',
         },
         {
+          -- nvim-cmp source for textDocument/documentSymbol via nvim-lsp
           'hrsh7th/cmp-nvim-lsp-document-symbol',
           after = 'nvim-cmp',
         },
@@ -317,7 +363,7 @@ packer.startup({
           after = 'nvim-cmp',
           config = function()
             local MYCONFIG_ROOT = vim.env.MYVIMRC:gsub("/[^/]+$", "")
-            require("cmp_dictionary").setup({
+            require('cmp_dictionary').setup({
               dic = {
                 ["*"] = { MYCONFIG_ROOT .. '/dict/star.txt' },
               },
@@ -334,12 +380,12 @@ packer.startup({
           'windwp/nvim-autopairs',
           after = 'nvim-cmp',
           config = function()
-            require('plugins.autopairs')
+            require('cmp.autopairs')
           end,
         }
       },
       config = function()
-        require('plugins.cmp')
+        require('cmp.cmp')
       end
     }
 
@@ -363,7 +409,7 @@ packer.startup({
       'akinsho/nvim-toggleterm.lua',
       event = 'BufWinEnter',
       config = function()
-        require('plugins.toggleterm')
+        require('others.toggleterm')
       end,
     }
 
@@ -381,13 +427,16 @@ packer.startup({
     -- a clipboard manager for neovim
     use {
       'AckslD/nvim-neoclip.lua',
-      event = 'BufWinEnter',
       requires = {'tami5/sqlite.lua', module = 'sqlite'},
+      after = 'telescope.nvim',
+      setup = function()
+        require('which-key').register({
+          ['<Leader>fc'] = {'<Cmd>Telescope neoclip plus<CR>', 'Search Clipboard History'},
+        })
+      end,
       config = function()
         require('neoclip').setup()
-        require('which-key').register({
-          ['<Leader>fc'] = 'Search Clipboard History',
-        })
+        require('telescope').load_extension('neoclip')
       end,
     }
     
@@ -409,9 +458,17 @@ packer.startup({
         'markdown'
       },
       setup = function ()
-        vim.cmd[[
-          au FileType markdown :lua require('which-key').register({ ['<Leader>mp'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'Markdown Preview'} }, { buffer=0 })
-        ]]
+        vim.api.nvim_create_autocmd({'FileType'}, {
+          pattern = 'markdown',
+          callback = function()
+            require('which-key').register({
+              ['<Leader>mp'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'Markdown Preview'}
+            }, {
+              buffer=0
+            }
+          )
+          end,
+        })
       end,
       config = function()
         -- refresh markdown when save the buffer or leave from insert mode
@@ -425,10 +482,10 @@ packer.startup({
         'markdown'
       },
       setup = function()
-        require('plugins.vim-markdown').setup()
+        require('others.vim-markdown').setup()
       end,
       config = function ()
-        require('plugins.vim-markdown').config()
+        require('others.vim-markdown').config()
       end
     }
 
@@ -441,7 +498,7 @@ packer.startup({
         'bib'
       },
       config = function()
-        require('plugins.vimtex')
+        require('others.vimtex')
       end
     }
 
@@ -449,7 +506,7 @@ packer.startup({
       'voldikss/vim-translator',
       event = 'BufWinEnter',
       setup = function()
-        require('plugins.translator')
+        require('others.translator')
       end
     }
 
@@ -462,3 +519,4 @@ packer.startup({
     }
   }
 })
+

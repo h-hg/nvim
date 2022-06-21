@@ -9,7 +9,7 @@ local function load_options()
   opt.showmode = true    -- show mode
   opt.showcmd = true     -- show command in the last line of the screen
   opt.cul = true         -- highlight current row
-  opt.cuc = true         -- highlight current column
+  -- opt.cuc = true         -- highlight current column
   opt.wrap = false
   opt.sm = true          -- showmatch, brackets match
   opt.matchtime = 2      -- How many tenths of a second to blink when matching brackets
@@ -33,14 +33,22 @@ local function load_options()
   -- line number
   opt.nu = true          -- show line number
   opt.rnu = true         -- use relative number in order to use nj, nk to jump
-  vim.cmd[[
-    augroup LineNumber
-      au FocusLost * :set nornu nu    " relative number when vim lost focus
-      au FocusGained * :set rnu       " absolute line number when vim gain focus
-      au InsertEnter * :set nornu nu  " absolute number when in INSERT mode
-      au InsertLeave * :set rnu       " relative number when in other mode
-    augroup END
-  ]]
+  vim.api.nvim_create_augroup('LineNumber', {clear = true})
+  -- relative number when vim lostes focus or is in INSERT mode
+  vim.api.nvim_create_autocmd({'FocusLost', 'InsertEnter'}, {
+    group = 'LineNumber',
+    callback = function()
+      vim.opt.rnu = false
+    end,
+  })
+  -- -- relative number when vim gains focus or in others mode
+  vim.api.nvim_create_autocmd({'FocusGained', 'InsertLeave'}, {
+    group = 'LineNumber',
+    callback = function()
+      vim.opt.rnu = true
+    end,
+  })
+
   -- theme
   opt.background = 'dark'
   opt.termguicolors = true

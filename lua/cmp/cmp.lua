@@ -1,7 +1,7 @@
 -- configuraion for nvim-cmp
 
 local lspkind = require('lspkind')
-
+local kind_icons = lspkind.presets.default
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = {
   'menu',
@@ -24,6 +24,18 @@ cmp.setup {
       require'luasnip'.lsp_expand(args.body)
     end,
   },
+  -- Disabling completion in certain contexts, such as comments, see https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#managing-completion-timing-completely
+  enabled = function()
+    -- disable completion in comments
+    local context = require 'cmp.config.context'
+    -- keep command mode completion enabled when cursor is in a comment
+    if vim.api.nvim_get_mode().mode == 'c' then
+      return true
+    else
+      return not context.in_treesitter_capture("comment") 
+        and not context.in_syntax_group("Comment")
+    end
+  end,
   mapping = {
     ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),{'i','c'}),
     ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),{'i','c'}),
@@ -64,7 +76,7 @@ cmp.setup {
   formatting = {
     format = function(entry, vim_item)
       -- fancy icons and a name of kind
-      vim_item.kind = lspkind.presets.default[vim_item.kind]
+      vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
       -- set a name for each source
       vim_item.menu = ({
         buffer = '[Buf]',

@@ -12,7 +12,7 @@ function M.config()
           text = function()
             return vim.fn.getcwd()
           end,
-          ighlight = 'Directory',
+          highlight = 'Directory',
           text_align = 'center'
         }
       },
@@ -31,8 +31,8 @@ local function keymap()
   wk.register({
     ['b'] = {
       name = 'Buffer',
-      ['<Tab>'] = {':BufferLineCycleNext<cr>','Buffer switch Next'},
-      ['<S-Tab>'] = {':BufferLineCyclePrev<cr>','Buffer switch Prev'},
+      ['<Tab>'] = {'<Cmd>BufferLineCycleNext<CR>','Buffer switch Next'},
+      ['<S-Tab>'] = {'<Cmd>BufferLineCyclePrev<CR>','Buffer switch Prev'},
       ['1'] = {'<Cmd>BufferLineGoToBuffer 1<CR>', 'Buffer switch 1'},
       ['2'] = {'<Cmd>BufferLineGoToBuffer 2<CR>', 'Buffer switch 2'},
       ['3'] = {'<Cmd>BufferLineGoToBuffer 3<CR>', 'Buffer switch 3'},
