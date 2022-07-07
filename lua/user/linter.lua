@@ -1,0 +1,15 @@
+-- Linters should be
+-- filled in as strings with either
+-- a global executable or a path to
+-- an executable
+
+-- require("lvim.lsp.null-ls.linters").setup({
+--   { filetypes = { "sh" }, command = "shellcheck" },
+--   { filetypes = { "go" }, command = "golangci_lint" },
+--   { filetypes = { "python" }, command = "pylint" },
+--   { filetypes = { "python" }, command = "flake8" },
+--   { filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" }, command = "eslint" },
+--   { filetypes = { "html" }, command = "tidy" },
+--   { filetypes = { "css" }, command = "stylelint" },
+--   { filetypes = { "markdown" }, command = "markdownlint", args = { "--disable", "MD013" } },
+-- })

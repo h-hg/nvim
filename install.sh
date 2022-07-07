@@ -21,13 +21,8 @@ sudo pacman -S zathura zathura-djvu zathura-pdf-mupdf
 # python
 ## neovim python
 sudo pacman -S python-pynvim
-## python lsp
-sudo pacman -S pyright
 ## python format
-sudo pacman -S autopep8
-
-# vimscript
-sudo npm install -g vim-language-server
+sudo pacman -S python-black
 
 # c/cpp
 sudo pacman -S clang
@@ -39,3 +34,8 @@ sudo pacman -S prettier
 # tex lsp
 sudo pacman -S texlab
 
+# shell
+sudo pacman -S shfmt
+
+# lua
+sudo pacman -S stylua
