@@ -1,7 +1,7 @@
 vim.opt.guifont = {
-  'JetBrainsMono Nerd Font Mono:h16',
+  'JetBrainsMono Nerd Font Mono:h14',
   -- windows
-  'Consolas:h16',
+  -- 'Consolas:h14',
 }
 
 local guiClient = os.getenv('NVIM_GUI')

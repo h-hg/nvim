@@ -7,28 +7,8 @@ lvim.builtin.lualine.options = {
 
 local components = require('lvim.core.lualine.components')
 lvim.builtin.lualine.sections.lualine_a = {
---   n常规模式
-
--- v可视模式
-
--- ve可视模式但不包括selection
-
--- o操作符等待模式
-
--- i插入模式
-
--- r替换模式
-
--- c命令行常规模式
-
--- ci命令行插入模式
-
--- cr命令行替换模式
-
--- sm插入模式下的显示匹配
-
--- a所有模式
   {
+    -- TODO more mode, see the original function
     'mode',
     fmt = function(str)
       return str:sub(1,1)
@@ -45,7 +25,7 @@ lvim.builtin.lualine.sections.lualine_b = {
         return vim.fn.expand('%:t')
       end
     end,
-    cond = require("lvim.core.lualine.conditions").hide_in_width
+    cond = require('lvim.core.lualine.conditions').hide_in_width
   },
   components.branch,
   components.diff,
@@ -95,7 +75,7 @@ lvim.builtin.lualine.sections.lualine_c = {
         return ''
       end
     end,
-    cond =  require("lvim.core.lualine.conditions").hide_in_width,
+    cond =  require('lvim.core.lualine.conditions').hide_in_width,
     -- color = { fg = '#00ff00' },
   }
 }

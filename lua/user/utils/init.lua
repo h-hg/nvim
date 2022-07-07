@@ -8,5 +8,6 @@ M.getVersion = function(str)
 end
 
 M.path = require('user.utils.path')
+M.filetype = require('user.utils.filetype')
 
 return M

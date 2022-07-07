@@ -6,6 +6,7 @@ lvim.builtin.notify.active = true
 
 -- terminal
 lvim.builtin.terminal.active = true
+require('user.builtin.toggleterm')
 
 require('user.builtin.lualine')
 require('user.builtin.nvimtree')

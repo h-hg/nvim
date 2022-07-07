@@ -1,4 +1,6 @@
-# A simple shell script using pacman to install dependencies.
+#!/bin/sh
+
+#A simple shell script using pacman to install dependencies.
 
 # neovim
 sudo pacman -S neovim
